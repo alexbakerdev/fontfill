@@ -18,7 +18,6 @@ var prevTime = Date.now();
 /*eslint-disable*/
 function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight) {
     var currentTime = Date.now();
-    if (currentTime - prevTime < 14) console.log('time since last ' + (currentTime - prevTime) / 1000);
     prevTime = currentTime;
     // for now assume one line desired
     var count = tokens.length;

@@ -1428,7 +1428,7 @@ module.exports =
 	
 	  /**
 	   * ReactiveClass Constructor
-	   * @return {ReactiveClass} [description]
+	   * @return {ReactiveClass} - new instance of ReactiveClass
 	   */
 	  function ReactiveClass() {
 	    (0, _classCallCheck3.default)(this, ReactiveClass);
@@ -1550,7 +1550,7 @@ module.exports =
 	}();
 	
 	/**
-	 * This callback is displayed as part of the Requester class.
+	 * This callback is called when a watched property is changed.
 	 * @callback ReactiveClass~watchCallback
 	 * @param {Any} newValue
 	 * @param {Any} oldValue
@@ -1584,7 +1584,6 @@ module.exports =
 	/*eslint-disable*/
 	function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight) {
 	    var currentTime = Date.now();
-	    if (currentTime - prevTime < 14) console.log('time since last ' + (currentTime - prevTime) / 1000);
 	    prevTime = currentTime;
 	    // for now assume one line desired
 	    var count = tokens.length;
@@ -1915,9 +1914,7 @@ module.exports =
 	  }, {
 	    key: 'targetString',
 	    set: function set(txt) {
-	      if (this._setProperty('_targetString', txt, 'string')) {
-	        this._invalidTokens = true;
-	      }
+	      this._setProperty('_targetString', txt, 'string');
 	    },
 	    get: function get() {
 	      return this._targetString;
@@ -1932,7 +1929,6 @@ module.exports =
 	    key: 'family',
 	    set: function set(family) {
 	      if (this._setProperty('_family', family, 'string')) {
-	        this._invalidOffsets = true;
 	        this.context.font = this.fontMetricsSize + 'px ' + this.family;
 	      }
 	    },
@@ -1950,7 +1946,6 @@ module.exports =
 	    key: 'fontMetricsSize',
 	    set: function set(size) {
 	      if (this._setProperty('_fontMetricsSize', size, 'number')) {
-	        this._invalidSolution = true;
 	        this.context.font = this.fontMetricsSize + 'px ' + this.family;
 	      }
 	    },
@@ -1966,9 +1961,7 @@ module.exports =
 	  }, {
 	    key: 'lineHeight',
 	    set: function set(lineHeight) {
-	      if (this._setProperty('_lineHeight', lineHeight, 'number')) {
-	        this._invalidSolution = true;
-	      }
+	      this._setProperty('_lineHeight', lineHeight, 'number');
 	    },
 	    get: function get() {
 	      return this._lineHeight;
@@ -1982,9 +1975,7 @@ module.exports =
 	  }, {
 	    key: 'height',
 	    set: function set(height) {
-	      if (this._setProperty('_height', height, 'number')) {
-	        this._invalidSolution = true;
-	      }
+	      this._setProperty('_height', height, 'number');
 	    },
 	    get: function get() {
 	      return this._height;
@@ -1998,9 +1989,7 @@ module.exports =
 	  }, {
 	    key: 'width',
 	    set: function set(width) {
-	      if (this._setProperty('_width', width, 'number')) {
-	        this._invalidSolution = true;
-	      }
+	      this._setProperty('_width', width, 'number');
 	    },
 	    get: function get() {
 	      return this._width;

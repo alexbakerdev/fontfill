@@ -13,7 +13,6 @@ let prevTime = Date.now()
  */
 function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight) {
     let currentTime = Date.now()
-    if ((currentTime-prevTime) < 14) console.log(`time since last ${(currentTime-prevTime)/1000}`)
     prevTime = currentTime
     // for now assume one line desired
     const count = tokens.length
