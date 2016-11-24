@@ -1,0 +1,24 @@
+.textbox {
+  display: flex;
+  border: 1px solid rgba(0,0,0,.4);
+  width: 95vw;
+  height: 75vh;
+  top: 20vh;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.textbox p {
+  padding: 0;
+  margin: 0;
+  display: block;
+  width: 90%;
+  height: 80%;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  color: rgba(0,0,0,.8);
+  background: rgba(0,0,0,.1);
+}

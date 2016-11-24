@@ -1,0 +1,69 @@
+# fontfill.js
+![fontfill logo](images/big-wide-logo.svg "fontfill Logo Title")
+
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+
+Best-fit any string into a box of arbitrary dimensions. Its a great solution for dynamic display text, responsive websites or a combination of both. Its pretty fast too, resizing a box will look smooth. It also implements a reactive state, so its possible to watch for changes to the fit, such as when the box is resized.
+
+## Install
+
+```
+npm install --save fontfill
+```
+
+## Getting Started
+
+The primary interface for this library is through a class called `AutoFittingText` which is detailed below. This package comes with multiple builds that are suitable for a range of use cases, and build tools.
+
+### ECMAScript2015
+
+This library was written in ECMAScript2015 and the source can be referenced directly like so:
+
+``` es6
+import { AutoFittingText } from 'fontfill/src'
+```
+
+You will need your own bundler and transpiler for this to work.
+
+### ES5
+
+If you are using your own bundler, but don't want to setup an es6 transpiler
+use the transpiled to ES5 version of this library like so:
+
+``` js
+var AutoFittingText = require('fontfill').AutoFittingText
+```
+
+### commonjs2
+
+If you have some requirement for a standalone commonjs2 module:
+``` js
+var AutoFittingText = require('fontfill').AutoFittingText
+```
+
+### Global
+
+if you want to access this module globally
+``` js
+var AutoFittingText = window.fontfill.AutoFittingText
+```
+
+## Example
+
+Here is a pretty straightforward example for a one-time fit
+
+``` es6
+import { AutoFittingText } from 'fontfill/src'
+
+const targetString = `Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 11032.`
+
+const targetDiv = document.body.query('.target-div')
+const bestFit = new AutoFittingText(targetDiv.width, targetDiv.height, {
+  targetString: targetString,
+  family: targetDiv.style.fontFamily
+  lineHeight: targetDiv.style.lineHeight // this should be a scalar
+})
+
+targetDiv.innerHTML = bestFit.metrics.lines.join('<br/>')
+targetDiv.style.fontSize = bestFit.metrics.fontSize
+```
