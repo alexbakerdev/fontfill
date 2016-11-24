@@ -15,14 +15,14 @@ const ctx = document.createElement('canvas').getContext('2d')
 const wordDeleminatorRegex = /[ ]/
 
 /**
- * A Class that represents the FittedText
- * Metrics
+ * A Class that represents the calculated best fit text.
  */
 class TextMetric {
   /**
    * TextMetric Constructor
    * @param  {Object}   options                 - Constructor Options
    * @param  {String[]} options.lines           - An array of strings, that represent the fitted text
+   *                                              line breaks.
    * @param  {Number}   options.fillRatio       - a ratio that can be used to fill as much space
    *                                              as possible (by scaling the font)
    * @param  {Number}   options.maxLineWidth    - The maximum (scaled) line width allowed
@@ -44,9 +44,7 @@ class TextMetric {
 }
 
 /**
- * AutoFittingText is a ReactiveClass, all of its computed
- * getters are memoized, but also correctly invalidated and
- * recalculated when a dependency is changed.
+ * AutoFittingText is a ReactiveClass, all of its computed getters are memoized, but also correctly invalidated and recalculated when a dependency is changed.
  * @extends module:ReactiveClass~ReactiveClass
  * @link ReactiveClass~ReactiveClass
  */
@@ -206,7 +204,7 @@ class AutoFittingText extends ReactiveClass {
   }
 
   /**
-   * Metrics
+   * The fitted text TextMetric. This is where the calculated best-fit information is stored.
    * @readOnly
    * @type {module:fontfill~TextMetric}
    */
@@ -275,7 +273,6 @@ class AutoFittingText extends ReactiveClass {
     let shouldBeString = type
 
     if (type && typeof val === type) {
-    // if ((params.validator && params.validator(val)) || (params.type && typeof val === params.type)) {
       this[prop] = val
     } else {
       throw new Error(`AutoFittingText prop: ${prop} should be ${shouldBeString}`)
