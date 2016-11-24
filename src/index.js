@@ -82,9 +82,7 @@ class AutoFittingText extends ReactiveClass {
    * @type {String}
    */
   set targetString (txt) {
-    if (this._setProperty('_targetString', txt, 'string')) {
-      this._invalidTokens = true
-    }
+    this._setProperty('_targetString', txt, 'string')
   }
 
   get targetString () {
@@ -97,7 +95,6 @@ class AutoFittingText extends ReactiveClass {
    */
   set family (family) {
     if (this._setProperty('_family', family, 'string')) {
-      this._invalidOffsets = true
       this.context.font = `${this.fontMetricsSize}px ${this.family}`
     }
   }
@@ -113,7 +110,6 @@ class AutoFittingText extends ReactiveClass {
    */
   set fontMetricsSize (size) {
     if (this._setProperty('_fontMetricsSize', size, 'number')) {
-      this._invalidSolution = true
       this.context.font = `${this.fontMetricsSize}px ${this.family}`
     }
   }
@@ -127,9 +123,7 @@ class AutoFittingText extends ReactiveClass {
    * @type {Number}
    */
   set lineHeight (lineHeight) {
-    if (this._setProperty('_lineHeight', lineHeight, 'number')) {
-      this._invalidSolution = true
-    }
+    this._setProperty('_lineHeight', lineHeight, 'number')
   }
 
   get lineHeight () {
@@ -141,9 +135,7 @@ class AutoFittingText extends ReactiveClass {
    * @type {Number}
    */
   set height (height) {
-    if (this._setProperty('_height', height, 'number')) {
-      this._invalidSolution = true
-    }
+    this._setProperty('_height', height, 'number')
   }
 
   get height () {
@@ -155,9 +147,7 @@ class AutoFittingText extends ReactiveClass {
    * @type {Number}
    */
   set width (width) {
-    if (this._setProperty('_width', width, 'number')) {
-      this._invalidSolution = true
-    }
+    this._setProperty('_width', width, 'number')
   }
 
   get width () {

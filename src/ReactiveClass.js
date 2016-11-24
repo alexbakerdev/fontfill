@@ -15,7 +15,7 @@ class ReactiveClass {
 
   /**
    * ReactiveClass Constructor
-   * @return {ReactiveClass} [description]
+   * @return {ReactiveClass} - new instance of ReactiveClass
    */
   constructor () {
     reactiveIds.set(this, uid++)
@@ -85,7 +85,7 @@ class ReactiveClass {
 }
 
 /**
- * This callback is displayed as part of the Requester class.
+ * This callback is called when a watched property is changed.
  * @callback ReactiveClass~watchCallback
  * @param {Any} newValue
  * @param {Any} oldValue

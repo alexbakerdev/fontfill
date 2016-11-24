@@ -114,9 +114,7 @@ var AutoFittingText = function (_ReactiveClass) {
   }, {
     key: 'targetString',
     set: function set(txt) {
-      if (this._setProperty('_targetString', txt, 'string')) {
-        this._invalidTokens = true;
-      }
+      this._setProperty('_targetString', txt, 'string');
     },
     get: function get() {
       return this._targetString;
@@ -131,7 +129,6 @@ var AutoFittingText = function (_ReactiveClass) {
     key: 'family',
     set: function set(family) {
       if (this._setProperty('_family', family, 'string')) {
-        this._invalidOffsets = true;
         this.context.font = this.fontMetricsSize + 'px ' + this.family;
       }
     },
@@ -149,7 +146,6 @@ var AutoFittingText = function (_ReactiveClass) {
     key: 'fontMetricsSize',
     set: function set(size) {
       if (this._setProperty('_fontMetricsSize', size, 'number')) {
-        this._invalidSolution = true;
         this.context.font = this.fontMetricsSize + 'px ' + this.family;
       }
     },
@@ -165,9 +161,7 @@ var AutoFittingText = function (_ReactiveClass) {
   }, {
     key: 'lineHeight',
     set: function set(lineHeight) {
-      if (this._setProperty('_lineHeight', lineHeight, 'number')) {
-        this._invalidSolution = true;
-      }
+      this._setProperty('_lineHeight', lineHeight, 'number');
     },
     get: function get() {
       return this._lineHeight;
@@ -181,9 +175,7 @@ var AutoFittingText = function (_ReactiveClass) {
   }, {
     key: 'height',
     set: function set(height) {
-      if (this._setProperty('_height', height, 'number')) {
-        this._invalidSolution = true;
-      }
+      this._setProperty('_height', height, 'number');
     },
     get: function get() {
       return this._height;
@@ -197,9 +189,7 @@ var AutoFittingText = function (_ReactiveClass) {
   }, {
     key: 'width',
     set: function set(width) {
-      if (this._setProperty('_width', width, 'number')) {
-        this._invalidSolution = true;
-      }
+      this._setProperty('_width', width, 'number');
     },
     get: function get() {
       return this._width;
