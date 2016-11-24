@@ -1,5 +1,5 @@
 # fontfill.js
-![fontfill logo](images/big-wide-logo.svg "fontfill Logo Title")
+![fontfill logo](https://cdn.rawgit.com/Xanderite/fontfill/master/images/big-wide-logo.svg "fontfill Logo Title")
 
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
@@ -57,7 +57,7 @@ import { AutoFittingText } from 'fontfill/src'
 
 const targetString = `Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 11032.`
 
-const targetDiv = document.body.query('.target-div')
+const targetDiv = document.body.querySelector('.target-div')
 const bestFit = new AutoFittingText(targetDiv.width, targetDiv.height, {
   targetString: targetString,
   family: targetDiv.style.fontFamily
@@ -93,6 +93,7 @@ targetDiv.style.fontSize = bestFit.metrics.fontSize
 
 <a name="module_fontfill..TextMetric"></a>
 ## Class: TextMetric
+A Class that represents the calculated best fit text.
 
 <a name="new_module_fontfill..TextMetric_new"></a>
 #### new TextMetric(options)
@@ -105,7 +106,7 @@ TextMetric Constructor
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Constructor Options |
-| options.lines | <code>Array.&lt;String&gt;</code> | An array of strings, that represent the fitted text |
+| options.lines | <code>Array.&lt;String&gt;</code> | An array of strings, that represent the fitted text                                              line breaks. |
 | options.fillRatio | <code>Number</code> | a ratio that can be used to fill as much space                                              as possible (by scaling the font) |
 | options.maxLineWidth | <code>Number</code> | The maximum (scaled) line width allowed |
 | options.largestLineSize | <code>Number</code> | The larget line width used |
@@ -114,6 +115,7 @@ TextMetric Constructor
 
 <a name="module_fontfill..AutoFittingText"></a>
 ## Class: AutoFittingText
+AutoFittingText is a ReactiveClass, all of its computed getters are memoized, but also correctly invalidated and recalculated when a dependency is changed.
 
 <a name="new_module_fontfill..AutoFittingText_new"></a>
 #### new AutoFittingText(width, height, options)
@@ -204,7 +206,7 @@ when rendered with current fontMetricSize and family
 
 
 
-Metrics
+The fitted text TextMetric. This is where the calculated best-fit information is stored.
 
 <a name="module_fontfill..AutoFittingText+context"></a>
 #### .context: `(constant)` : <code>[CanvasRenderingContext2D](#external_CanvasRenderingContext2D)</code>
