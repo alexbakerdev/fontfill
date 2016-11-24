@@ -1,11 +1,11 @@
 {
   "name": "fontfill",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Auto fill a box with arbitary text",
   "main": "dist/index.js",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/Xanderite/fontfill.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xanderite/fontfill.git"
   },
   "scripts": {
     "test": "karma start test/karma.conf.js --single-run",
