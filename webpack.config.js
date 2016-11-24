@@ -1,6 +1,5 @@
 var path = require('path')
 var webpack = require('webpack')
-var merge = require('webpack-merge')
 
 process.env.BUILD_ENV = process.env.BUILD_ENV || 'prod'
 
