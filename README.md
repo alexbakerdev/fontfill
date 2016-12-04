@@ -83,6 +83,7 @@ targetDiv.style.fontSize = bestFit.metrics.fontSize
         * [.tokens](#module_fontfill..AutoFittingText+tokens) ⇒ <code>Array.&lt;String&gt;</code>
         * [.spaceSize](#module_fontfill..AutoFittingText+spaceSize) ⇒ <code>Number</code>
         * [.offsets](#module_fontfill..AutoFittingText+offsets) ⇒ <code>Array.&lt;Number&gt;</code>
+        * [.maxTokenSize](#module_fontfill..AutoFittingText+maxTokenSize) ⇒ <code>Number</code>
         * [.metrics](#module_fontfill..AutoFittingText+metrics) : <code>[TextMetric](#module_fontfill..TextMetric)</code>
         * [.context](#module_fontfill..AutoFittingText+context) : <code>[CanvasRenderingContext2D](#external_CanvasRenderingContext2D)</code>
         * [.defaultFontMetricSize](#module_fontfill..AutoFittingText+defaultFontMetricSize) : <code>Number</code>
@@ -199,6 +200,14 @@ fontMetricSize and family
 
 A cumulative list of target string length, by word
 when rendered with current fontMetricSize and family
+
+<a name="module_fontfill..AutoFittingText+maxTokenSize"></a>
+#### .maxTokenSize ⇒ <code>Number</code>
+
+
+
+**Returns**: <code>Number</code> - - the largest token size using current fontFamily  
+The biggest token size of current targetString
 
 <a name="module_fontfill..AutoFittingText+metrics"></a>
 #### .metrics: `(readonly)` : <code>[TextMetric](#module_fontfill..TextMetric)</code>
