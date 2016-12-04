@@ -188,9 +188,22 @@ class AutoFittingText extends ReactiveClass {
     offsets[0] = 0
     for (let i = 0; i < this.tokens.length; i++) {
       const token = this.tokens[i]
-      offsets[i + 1] = offsets[i] + this.context.measureText(token).width
+      const tokenWidth = this.context.measureText(token).width
+      offsets[i + 1] = offsets[i] + tokenWidth
+      this._maxTokenSize = Math.max(this._maxTokenSize || 0, tokenWidth)
     }
     return offsets
+  }
+
+  /**
+   * The biggest token size of current targetString
+   * @return {Number} - the largest token size using current fontFamily
+   */
+  get maxTokenSize () {
+    if (this.offsets) {
+      return this._maxTokenSize
+    }
+    return 0
   }
 
   /**
@@ -206,7 +219,8 @@ class AutoFittingText extends ReactiveClass {
       this.width,
       this.height,
       this.fontMetricsSize,
-      this.lineHeight
+      this.lineHeight,
+      this.maxTokenSize
     )
 
     const lines = bestFit.results.map(({line}) => line)
