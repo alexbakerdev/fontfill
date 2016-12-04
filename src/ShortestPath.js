@@ -101,6 +101,11 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         maxLineWidth = currentLines * width/heightRatio
         results = findMinima(maxLineWidth, currentLines)
 
+        if (attempts > 100) {
+            throw new Error(`Can't fit text after ${attempts} attempts`);
+        }
+        attempts++
+
         if (!results) {
             currentLines++
         } else {
