@@ -11,18 +11,20 @@ let prevTime = Date.now()
  * @todo tidy code
  * @todo implement faster algorithm (SMAWK)
  */
-function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight) {
+function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight, maxTokenSize) {
     let currentTime = Date.now()
     prevTime = currentTime
-    // for now assume one line desired
     const count = tokens.length
-    let lines = 1
+
     let heightRatio = height/(fontSize*lineHeight)
+
+    // Use the maxTokenSize to caclulate the minimum lines
+    let lines = Math.ceil(maxTokenSize * heightRatio / width)
+
     // figure out minimum lines
     // should implement a binary search for this
     let i = lines
     let finished = false
-    let scale = false
     let previousBreakpoint
     while (!finished) {
         let maxSpace = width/heightRatio * i * i
@@ -33,7 +35,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
                 for (let k = j+1; k < count+1; k++) {
                     if (offsets[k] + ( k + i - 1) * spaceSize > newMaxSpace) {
                         needsNewLine = true
-                        previousBreakpoint = k // shouldn't find the breakpoint earlier than this
+                        previousBreakpoint = k - 1 // shouldn't find the breakpoint earlier than this
                         break
                     }
                 }
@@ -54,13 +56,10 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         }
     }
     let minLines = i
-    let maxLineWidth
     let largestLineSize
-    function findMinima(scale, targetLines) {
-        let scaledWidth = scale * width/heightRatio
+    function findMinima(scaledWidth, targetLines) {
         let minima = [0].concat(fillArray(Array(count), Infinity))
         let breaks = fillArray(Array(count + 1), 0)
-        maxLineWidth = scaledWidth
         largestLineSize = 0
         for (let i = 0; i < count; i++) {
             let j = i + 1
@@ -82,6 +81,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
 
         let lines = []
         let j = count
+
         while (j > 0) {
             let i = breaks[j]
             let width = offsets[j] - offsets[i] + (j - i) *spaceSize
@@ -94,10 +94,13 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
     }
     let currentLines = minLines
     let results
+    let maxLineWidth
+    let attempts = 0
     let trying = true
     while (trying) {
-        let scale = currentLines
-        results = findMinima(scale, currentLines)
+        maxLineWidth = currentLines * width/heightRatio
+        results = findMinima(maxLineWidth, currentLines)
+
         if (!results) {
             currentLines++
         } else {
