@@ -1,7 +1,6 @@
 # fontfill.js
 ![fontfill logo](https://cdn.rawgit.com/Xanderite/fontfill/master/images/big-wide-logo.svg "fontfill Logo Title")
-
-[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![npm](https://img.shields.io/npm/v/fontfill.svg)]() [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 Best-fit any string into a box of arbitrary dimensions. Its a great solution for dynamic display text, responsive websites or a combination of both. Its pretty fast too, resizing a box will look smooth. It also implements a reactive state, so its possible to watch for changes to the fit, such as when the box is resized.
 
