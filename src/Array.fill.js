@@ -13,14 +13,14 @@ if (!Array.prototype.fill) {
 
     let len = O.length >>> 0
 
-    let start = arguments[1]
+    let start = args[1]
     let relativeStart = start >> 0
 
     let k = relativeStart < 0
       ? Math.max(len + relativeStart, 0)
       : Math.min(relativeStart, len)
 
-    let end = arguments[2]
+    let end = args[2]
     let relativeEnd = end === undefined
       ? len : end >> 0
 
