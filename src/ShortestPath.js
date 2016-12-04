@@ -65,7 +65,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         for (let i = 0; i < count; i++) {
             let j = i + 1
             while (j <= count) {
-                let w = offsets[j] - offsets[i] + (j - i) *spaceSize
+                let w = offsets[j] - offsets[i] + (j - i - 1) *spaceSize
                 let cost
                 if (w > scaledWidth) {
                     break
