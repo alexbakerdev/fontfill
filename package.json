@@ -12,7 +12,9 @@
     "dev": "BUILD_ENV=dev webpack-dev-server --content-base dist/",
     "build": "rm -rf ./dist && BUILD_ENV=prod node_modules/.bin/webpack && npm run babel && npm run docs",
     "docs": "jsdoc2md -t doc-build/jsdoc2md.hbs --files ./src/*.js --helper doc-build/helpers/*.js --partial doc-build/partials/*.hbs > README.md",
-    "babel": "babel ./src -d ./dist"
+    "babel": "babel ./src -d ./dist",
+    "preversion": "npm install . -g && npm build && npm test",
+    "version": "npm build && git add dist/*"
   },
   "author": "Alex Baker",
   "license": "MIT",
