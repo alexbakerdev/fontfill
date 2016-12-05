@@ -186,11 +186,12 @@ class AutoFittingText extends ReactiveClass {
   get offsets () {
     let offsets = new Array(this.tokens.length + 1)
     offsets[0] = 0
+    this._maxTokenSize = 0
     for (let i = 0; i < this.tokens.length; i++) {
       const token = this.tokens[i]
       const tokenWidth = this.context.measureText(token).width
       offsets[i + 1] = offsets[i] + tokenWidth
-      this._maxTokenSize = Math.max(this._maxTokenSize || 0, tokenWidth)
+      this._maxTokenSize = Math.max(this._maxTokenSize, tokenWidth)
     }
     return offsets
   }
