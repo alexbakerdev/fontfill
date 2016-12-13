@@ -1,5 +1,6 @@
 /**
  * @module ReactiveClass
+ * @private
  */
 import { Observer } from './Observer'
 
@@ -10,6 +11,7 @@ let uid = 0
 
 /**
  * A Class that is reactive
+ * @private
  */
 class ReactiveClass {
 

@@ -1,5 +1,6 @@
 /**
  * @module ShortestPath
+ * @private
  */
 
 /*eslint-disable*/
@@ -8,6 +9,7 @@ import { fillArray } from './Array.fill'
 let prevTime = Date.now()
 
 /**
+ * @private
  * @todo tidy code
  * @todo implement faster algorithm (SMAWK)
  */

@@ -15,33 +15,16 @@ const ctx = document.createElement('canvas').getContext('2d')
 const wordDeleminatorRegex = /[ ]/
 
 /**
- * A Class that represents the calculated best fit text.
+ * A type that stores the data of the calculated best fit text.
+ * @typedef    {Object} TextMetric
+ * @property   {String[]}   lines           - An array of strings, that represent the fitted text line breaks.
+ * @property   {Number}     fillRatio       - a ratio that can be used to fill as much space as possible (by scaling the font)
+ * @property   {Number}     maxLineWidth    - The maximum (scaled) line width allowed
+ * @property   {Number}     largestLineSize - The larget line width used
+ * @property   {Number}     targetLines     - The number of lines of the fitted text
+ * @property   {Number}     fontSize        - The fontSize to use for the fitted text, this has been scaled by the fillratio.
+ * @return     {TextMetric}                 - New instance of TextMetric
  */
-class TextMetric {
-  /**
-   * TextMetric Constructor
-   * @param  {Object}   options                 - Constructor Options
-   * @param  {String[]} options.lines           - An array of strings, that represent the fitted text
-   *                                              line breaks.
-   * @param  {Number}   options.fillRatio       - a ratio that can be used to fill as much space
-   *                                              as possible (by scaling the font)
-   * @param  {Number}   options.maxLineWidth    - The maximum (scaled) line width allowed
-   * @param  {Number}   options.largestLineSize - The larget line width used
-   * @param  {Number}   options.targetLines     - The number of lines of the fitted text
-   * @param  {Number}   options.fontSize        - The fontSize to use for the fitted text
-   * @return {TextMetric}                       - New instance of TextMetric
-   */
-  constructor ({
-    lines,
-    fillRatio,
-    maxLineWidth,
-    largestLineSize,
-    targetLines,
-    fontSize
-  }) {
-    Object.assign(this, arguments[0])
-  }
-}
 
 /**
  * AutoFittingText is a ReactiveClass, all of its computed getters are memoized, but also correctly invalidated and recalculated when a dependency is changed.
@@ -251,14 +234,14 @@ class AutoFittingText extends ReactiveClass {
       fillRatio = Math.min(widthRatio, heightRatio)
     }
 
-    return new TextMetric({
+    return {
       lines,
       fillRatio,
       maxLineWidth: bestFit.maxLineWidth,
       largestLineSize: bestFit.largestLineSize,
       targetLines: targetLines,
       fontSize: roundDown(fillRatio * this.height / (targetLines * this.lineHeight))
-    })
+    }
   }
 
   /**
