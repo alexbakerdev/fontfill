@@ -1,0 +1,53 @@
+<a name="{{anchorName}}"></a>
+## {{kind}}: {{name}}
+{{description}}
+{{body}}
+{{#is kind "typedef"}}{{>properties}}{{/is~}}
+{{#children}}
+<a name="{{{anchorName}}}"></a>
+{{>heading-indent}}{{#if virtual}}*{{/if}}{{#with (parentObject)}}{{#if virtual}}*{{/if~}}{{/with~}}
+{{#if name}}{{#sig~}}
+{{{@depOpen}~}}
+{{{@codeOpen}~}}
+{{#if @prefix}}{{@prefix}} {{/if~}}
+{{@accessSymbol}}{{#if (isEvent)}}"{{{name}}}"{{else}}{{{name}}}{{/if~}}
+{{#if @methodSign}}{{#if (isEvent)}} {{@methodSign}}{{else}}{{@methodSign}}{{/if}}{{/if~}}
+{{{@codeClose}~}}
+{{#is kind "constant"}}: `(constant)`{{else}}{{#if readonly}}: `(readonly)`{{/if~}}{{/is~}}
+{{#if @returnSymbol}} {{@returnSymbol}}{{/if~}}
+{{#if @returnTypes}} {{>linked-type-list types=@returnTypes delimiter=" &#124; " }}{{/if~}}
+{{#if @suffix}} {{@suffix}}{{/if~}}
+{{{@depClose}~}}
+{{~/sig}}
+{{#unless (equal defaultvalue undefined)}} : _(default = _{{>defaultvalue}}_)_{{/unless}}
+{{/if~}}
+{{#if virtual}}*{{/if}}{{#with (parentObject)}}{{#if virtual}}*{{/if}}
+{{/with}}
+
+{{>deprecated~}}
+{{>summary~}}
+{{>augments~}}
+{{>implements~}}
+{{>mixes~}}
+{{>chainable~}}
+{{>overrides~}}
+{{>returns~}}
+{{>category~}}
+{{>throws~}}
+{{>fires~}}
+{{>this~}}
+{{>access~}}
+{{>requires~}}
+{{>description}}
+{{>todo~}}
+{{>params~}}
+{{>properties~}}
+{{>examples~}}
+{{>customTags~}}
+{{>see~}}
+{{>since~}}
+{{>version~}}
+{{>authors~}}
+{{>license~}}
+{{>copyright~}}
+{{/children~}}

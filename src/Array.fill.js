@@ -1,5 +1,6 @@
 /**
  * Taken and adapted from https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/fill
+ * @private
  */
 let fillArray
 

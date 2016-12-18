@@ -3,6 +3,7 @@ let singleton
 /**
  * A class that uses amimation frames, and a settimeout fallback
  * to call a watched properties watcher callbacks
+ * @private
  */
 class OptimizedWatcher {
   constructor () {
