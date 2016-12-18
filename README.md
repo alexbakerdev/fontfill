@@ -70,16 +70,16 @@ targetDiv.style.fontSize = bestFit.metrics.fontSize
 # API Reference
 
 * [fontfill](#module_fontfill)
-    * [~TextMetric](#module_fontfill..TextMetric)
-        * [new TextMetric(options)](#new_module_fontfill..TextMetric_new)
-    * [~AutoFittingText](#module_fontfill..AutoFittingText) ⇐ <code>[ReactiveClass](#module_ReactiveClass..ReactiveClass)</code>
+    * [~AutoFittingText](#module_fontfill..AutoFittingText) ⇐ <code>[ReactiveClass](#new_module_ReactiveClass..ReactiveClass_new)</code>
         * [new AutoFittingText(width, height, options)](#new_module_fontfill..AutoFittingText_new)
         * [.targetString](#module_fontfill..AutoFittingText+targetString) : <code>String</code>
         * [.family](#module_fontfill..AutoFittingText+family) : <code>String</code>
+        * [.weight](#module_fontfill..AutoFittingText+weight) : <code>Number</code>
         * [.fontMetricsSize](#module_fontfill..AutoFittingText+fontMetricsSize) : <code>Number</code>
         * [.lineHeight](#module_fontfill..AutoFittingText+lineHeight) : <code>Number</code>
         * [.height](#module_fontfill..AutoFittingText+height) : <code>Number</code>
         * [.width](#module_fontfill..AutoFittingText+width) : <code>Number</code>
+        * [.contextFontString](#module_fontfill..AutoFittingText+contextFontString) ⇒ <code>String</code>
         * [.tokens](#module_fontfill..AutoFittingText+tokens) ⇒ <code>Array.&lt;String&gt;</code>
         * [.spaceSize](#module_fontfill..AutoFittingText+spaceSize) ⇒ <code>Number</code>
         * [.offsets](#module_fontfill..AutoFittingText+offsets) ⇒ <code>Array.&lt;Number&gt;</code>
@@ -90,36 +90,14 @@ targetDiv.style.fontSize = bestFit.metrics.fontSize
         * [.wordDeleminatorRegex](#module_fontfill..AutoFittingText+wordDeleminatorRegex) : <code>RegExp</code>
         * [.$watch(key, callback)](#module_ReactiveClass..ReactiveClass+$watch)
         * [.$set(key, descriptor)](#module_ReactiveClass..ReactiveClass+$set)
-
-<a name="module_fontfill..TextMetric"></a>
-## Class: TextMetric
-A Class that represents the calculated best fit text.
-
-<a name="new_module_fontfill..TextMetric_new"></a>
-#### new TextMetric(options)
-
-
-
-TextMetric Constructor
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>Object</code> | Constructor Options |
-| options.lines | <code>Array.&lt;String&gt;</code> | An array of strings, that represent the fitted text                                              line breaks. |
-| options.fillRatio | <code>Number</code> | a ratio that can be used to fill as much space                                              as possible (by scaling the font) |
-| options.maxLineWidth | <code>Number</code> | The maximum (scaled) line width allowed |
-| options.largestLineSize | <code>Number</code> | The larget line width used |
-| options.targetLines | <code>Number</code> | The number of lines of the fitted text |
-| options.fontSize | <code>Number</code> | The fontSize to use for the fitted text |
+    * [~TextMetric](#module_fontfill..TextMetric) ⇒ <code>TextMetric</code>
 
 <a name="module_fontfill..AutoFittingText"></a>
-## Class: AutoFittingText
+## class: AutoFittingText
 AutoFittingText is a ReactiveClass, all of its computed getters are memoized, but also correctly invalidated and recalculated when a dependency is changed.
 
 <a name="new_module_fontfill..AutoFittingText_new"></a>
 #### new AutoFittingText(width, height, options)
-
 
 
 AutoFittingText Constructor
@@ -133,10 +111,10 @@ AutoFittingText Constructor
 | options.lineHeight | <code>Number</code> | <code>1.2</code> | Scalar value for text line height |
 | options.family | <code>String</code> | <code>&#x27;Arial&#x27;</code> | Name of the font family to use |
 | options.targetString | <code>String</code> | <code>&#x27;&#x27;</code> | String to fit |
+| options.weight | <code>String</code> | <code>&#x27;normal&#x27;</code> | weight of string |
 
 <a name="module_fontfill..AutoFittingText+targetString"></a>
 #### .targetString : <code>String</code>
-
 
 
 String to fit
@@ -145,12 +123,16 @@ String to fit
 #### .family : <code>String</code>
 
 
-
 FontFamiy to fit text with
+
+<a name="module_fontfill..AutoFittingText+weight"></a>
+#### .weight : <code>Number</code>
+
+
+Font Weight to use when calculating token size.
 
 <a name="module_fontfill..AutoFittingText+fontMetricsSize"></a>
 #### .fontMetricsSize : <code>Number</code>
-
 
 
 The fontSize to use for calculating fontMetrics (small is
@@ -160,12 +142,10 @@ faster, bigger is more precise)
 #### .lineHeight : <code>Number</code>
 
 
-
 The line height to use when fitting text, as a scalar
 
 <a name="module_fontfill..AutoFittingText+height"></a>
 #### .height : <code>Number</code>
-
 
 
 Height to constrain text fit to, as a `px` value.
@@ -174,12 +154,17 @@ Height to constrain text fit to, as a `px` value.
 #### .width : <code>Number</code>
 
 
-
 Width to constrain text fit to, as a `px` value.
+
+<a name="module_fontfill..AutoFittingText+contextFontString"></a>
+#### .contextFontString ⇒ <code>String</code>
+
+
+**Returns**: <code>String</code> - - A string that describes the CanvasRenderingContext2D font style  
+The string to use when setting context font weight
 
 <a name="module_fontfill..AutoFittingText+tokens"></a>
 #### .tokens: `(readonly)` ⇒ <code>Array.&lt;String&gt;</code>
-
 
 
 The target string broken into an array of words split
@@ -189,13 +174,11 @@ by wordDeleminatorRegex
 #### .spaceSize: `(readonly)` ⇒ <code>Number</code>
 
 
-
 The size of a rendered space with current
 fontMetricSize and family
 
 <a name="module_fontfill..AutoFittingText+offsets"></a>
 #### .offsets: `(readonly)` ⇒ <code>Array.&lt;Number&gt;</code>
-
 
 
 A cumulative list of target string length, by word
@@ -205,13 +188,11 @@ when rendered with current fontMetricSize and family
 #### .maxTokenSize ⇒ <code>Number</code>
 
 
-
 **Returns**: <code>Number</code> - - the largest token size using current fontFamily  
 The biggest token size of current targetString
 
 <a name="module_fontfill..AutoFittingText+metrics"></a>
 #### .metrics: `(readonly)` : <code>[TextMetric](#module_fontfill..TextMetric)</code>
-
 
 
 The fitted text TextMetric. This is where the calculated best-fit information is stored.
@@ -220,12 +201,10 @@ The fitted text TextMetric. This is where the calculated best-fit information is
 #### .context: `(constant)` : <code>[CanvasRenderingContext2D](#external_CanvasRenderingContext2D)</code>
 
 
-
 Static property that stores a shared shadow Canvas 2D Rendering Context element.
 
 <a name="module_fontfill..AutoFittingText+defaultFontMetricSize"></a>
 #### .defaultFontMetricSize: `(constant)` : <code>Number</code> : _(default = _<code>100</code>_)_
-
 
 
 default fontMetricSize
@@ -234,12 +213,10 @@ default fontMetricSize
 #### .wordDeleminatorRegex: `(constant)` : <code>RegExp</code>
 
 
-
 Regular Expression for splitting string into words
 
 <a name="module_ReactiveClass..ReactiveClass+$watch"></a>
 #### .$watch(key, callback)
-
 
 
 Watch an instance property
@@ -254,7 +231,6 @@ Watch an instance property
 #### .$set(key, descriptor)
 
 
-
 Set a new, reactive instance property. Should be used instead of
 Object.defineProperty()
 
@@ -264,11 +240,24 @@ Object.defineProperty()
 | key | <code>String</code> | Property key |
 | descriptor | <code>Object</code> | Property descriptor |
 
+<a name="module_fontfill..TextMetric"></a>
+## typedef: TextMetric
+A type that stores the data of the calculated best fit text.
+
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| lines | <code>Array.&lt;String&gt;</code> | An array of strings, that represent the fitted text line breaks. |
+| fillRatio | <code>Number</code> | a ratio that can be used to fill as much space as possible (by scaling the font) |
+| maxLineWidth | <code>Number</code> | The maximum (scaled) line width allowed |
+| largestLineSize | <code>Number</code> | The larget line width used |
+| targetLines | <code>Number</code> | The number of lines of the fitted text |
+| fontSize | <code>Number</code> | The fontSize to use for the fitted text, this has been scaled by the fillratio. |
+
 
 
 # Externals
-
-
 <a name="external_CanvasRenderingContext2D"></a>
 
 ## CanvasRenderingContext2D
