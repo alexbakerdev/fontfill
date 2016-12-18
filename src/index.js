@@ -94,9 +94,7 @@ class AutoFittingText extends ReactiveClass {
    * @type {String}
    */
   set family (family) {
-    if (this._setProperty('_family', family, 'string')) {
-      this.context.font = `${this.fontMetricsSize}px ${this.family}`
-    }
+    this._setProperty('_family', family, 'string')
   }
 
   get family () {
@@ -109,9 +107,7 @@ class AutoFittingText extends ReactiveClass {
    * @type {Number}
    */
   set fontMetricsSize (size) {
-    if (this._setProperty('_fontMetricsSize', size, 'number')) {
-      this.context.font = `${this.fontMetricsSize}px ${this.family}`
-    }
+    this._setProperty('_fontMetricsSize', size, 'number')
   }
 
   get fontMetricsSize () {
@@ -158,6 +154,14 @@ class AutoFittingText extends ReactiveClass {
   // Memoized and Updateable thanks to ReactiveClass
 
   /**
+   * The string to use when setting context font weight
+   * @return {String} - A string that describes the CanvasRenderingContext2D font style
+   */
+  get contextFontString () {
+    return `${this.fontMetricsSize}px ${this.family}`
+  }
+
+  /**
    * The target string broken into an array of words split
    * by wordDeleminatorRegex
    * @readOnly
@@ -174,6 +178,7 @@ class AutoFittingText extends ReactiveClass {
    * @return {Number}
    */
   get spaceSize () {
+    this.context.font = this.contextFontString
     return this.context.measureText(' ').width
   }
 
@@ -185,6 +190,7 @@ class AutoFittingText extends ReactiveClass {
    */
   get offsets () {
     let offsets = new Array(this.tokens.length + 1)
+    this.context.font = this.contextFontString
     offsets[0] = 0
     for (let i = 0; i < this.tokens.length; i++) {
       const token = this.tokens[i]
