@@ -102,6 +102,18 @@ class AutoFittingText extends ReactiveClass {
   }
 
   /**
+   * Font Weight to use when calculating token size.
+   * @type {Number}
+   */
+  set weight (weight) {
+    this._setProperty('_weight', weight, 'string')
+  }
+
+  get weight () {
+    return this._weight
+  }
+
+  /**
    * The fontSize to use for calculating fontMetrics (small is
    * faster, bigger is more precise)
    * @type {Number}
@@ -158,7 +170,7 @@ class AutoFittingText extends ReactiveClass {
    * @return {String} - A string that describes the CanvasRenderingContext2D font style
    */
   get contextFontString () {
-    return `${this.fontMetricsSize}px ${this.family}`
+    return `${this.weight} ${this.fontMetricsSize}px ${this.family}`
   }
 
   /**
@@ -256,9 +268,10 @@ class AutoFittingText extends ReactiveClass {
    * @param  {Number} options.lineHeight=1.2  - Scalar value for text line height
    * @param  {String} options.family='Arial'  - Name of the font family to use
    * @param  {String} options.targetString='' - String to fit
+   * @param  {String} options.weight='normal' - weight of string
    * @return {AutoFittingText}                - Instance of AutoFittingText
    */
-  constructor (width, height, {lineHeight, family, targetString}) {
+  constructor (width, height, {lineHeight, family, targetString, weight}) {
     super()
     this.fontMetricsSize = this.defaultFontMetricSize
     this.width = width
@@ -267,6 +280,7 @@ class AutoFittingText extends ReactiveClass {
     this.lineHeight = lineHeight || 1.2
     this.family = family || 'Arial'
     this.targetString = targetString || ''
+    this.weight = weight || 'normal'
     this.reactive()
   }
 
