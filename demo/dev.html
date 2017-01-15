@@ -7,7 +7,7 @@
 <body>
 <img src="../images/big-wide-logo.svg"></img>
 <script src="http://cdn.jsdelivr.net/interact.js/1.2.6/interact.min.js"></script>
-<script src="../dist/fontfill.global.js"></script>
+<script src="http://localhost:8080/fontfill.global.js"></script>
 <script>
   /* global fontfill, interact */
   var AutoFittingText = fontfill.AutoFittingText
@@ -20,15 +20,15 @@
   div.appendChild(innerDiv)
   innerDiv.appendChild(p)
 
-  var testString = 'Best-fit any string into a box of arbitrary dimensions.'
+  var testString = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
 
   div.className = 'textbox'
   innerDiv.className = 'inner-textbox'
 
   var family = 'Helvetica'
-  var lineHeight = 1.2
+  var lineHeight = 2
 
-  window.fittedText = new AutoFittingText(div.clientWidth || 100, div.clientWidth || 100, { targetString: testString, family, lineHeight, weight: 'bold' })
+  window.fittedText = new AutoFittingText(div.clientWidth || 100, div.clientWidth || 100, { targetString: testString, family, lineHeight, weight: 'normal', maxFontSize: 30 })
 
   document.body.appendChild(div)
   ia('.textbox')
