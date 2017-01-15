@@ -73,7 +73,7 @@ class ReactiveClass {
             shadowValues[reactiveIds.get(this)][key] = val
           }
         )
-      if (descriptor && descriptor.value) {
+      if (descriptor && (descriptor.value || descriptor.value === 0)) {
         shadowValues[reactiveIds.get(this)][key] = descriptor.value
       }
     } else if (descriptor) {
