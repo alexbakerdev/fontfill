@@ -13,15 +13,23 @@ let prevTime = Date.now()
  * @todo tidy code
  * @todo implement faster algorithm (SMAWK)
  */
-function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight, maxTokenSize) {
+function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight, maxTokenSize, maxLineHeight) {
     let currentTime = Date.now()
     prevTime = currentTime
     const count = tokens.length
 
+    // heightRatio is how many times the unscaled fontsize * desired line height fit into the height of the box.
     let heightRatio = height/(fontSize*lineHeight)
+    
+    // Use the maxTokenSize and maxLineHeight to caclulate the minimum lines
+    let lines
 
-    // Use the maxTokenSize to caclulate the minimum lines
-    let lines = Math.ceil(maxTokenSize * heightRatio / width)
+    lines = Math.ceil(maxTokenSize * heightRatio / width)
+
+    if (maxLineHeight > 0) {
+        const maxLineHeightLines = Math.ceil(height / maxLineHeight)
+        lines = Math.max(lines, maxLineHeightLines)
+    }
 
     // figure out minimum lines
     // should implement a binary search for this
