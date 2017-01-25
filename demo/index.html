@@ -20,7 +20,7 @@
   div.appendChild(innerDiv)
   innerDiv.appendChild(p)
 
-  var testString = 'Best-fit any string into a box of arbitrary dimensions.'
+  var testString = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
 
   div.className = 'textbox'
   innerDiv.className = 'inner-textbox'
@@ -28,7 +28,7 @@
   var family = 'Helvetica'
   var lineHeight = 1.2
 
-  window.fittedText = new AutoFittingText(div.clientWidth || 100, div.clientWidth || 100, { targetString: testString, family, lineHeight, weight: 'bold' })
+  window.fittedText = new AutoFittingText(div.clientWidth || 100, div.clientWidth || 100, { targetString: testString, family, lineHeight, weight: 'normal' })
 
   document.body.appendChild(div)
   ia('.textbox')
