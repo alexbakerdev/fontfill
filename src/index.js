@@ -145,6 +145,42 @@ class AutoFittingText extends ReactiveClass {
     return this._width
   }
 
+  /**
+   * The maximum font size to use when best fitting text as a px value.
+   * @type  {Number}
+   */
+  set maxFontSize (size) {
+    this._setProperty('_maxFontSize', size, 'number')
+  }
+
+  get maxFontSize () {
+    return this._maxFontSize
+  }
+
+  /**
+   * The minimum font size to use when best fitting text as a px value.
+   * @type  {Number}
+   */
+  set minFontSize (size) {
+    this._setProperty('_minFontSize', size, 'number')
+  }
+
+  get minFontSize () {
+    return this._minFontSize
+  }
+
+  /**
+   * Token to use when text has to be truncated to fit minimum font size
+   * @type {String}
+   */
+  set truncatedToken (token) {
+    this._setProperty('_truncatedToken', token, 'string')
+  }
+
+  get truncatedToken () {
+    return this._truncatedToken
+  }
+
   // Computed Getters
   // Memoized and Updateable thanks to ReactiveClass
 
@@ -175,6 +211,17 @@ class AutoFittingText extends ReactiveClass {
   get spaceSize () {
     this.context.font = this.contextFontString
     return this.context.measureText(' ').width
+  }
+
+  /**
+   * The size of a rendered space with current
+   * fontMetricSize and family
+   * @readOnly
+   * @return {Number}
+   */
+  get truncatedTokenSize () {
+    this.context.font = this.contextFontString
+    return this.context.measureText(this.truncatedToken).width
   }
 
   /**
@@ -209,6 +256,22 @@ class AutoFittingText extends ReactiveClass {
   }
 
   /**
+   * The maximum line height is calculatied using line height ratio and maxFontSize
+   * @return {Number}
+   */
+  get maxLineHeight () {
+    return this.maxFontSize * this.lineHeight
+  }
+
+  /**
+   * The minimum line height is calculatied using line height ratio and minFontSize
+   * @return {Number}
+   */
+  get minLineHeight () {
+    return this.minFontSize * this.lineHeight
+  }
+
+  /**
    * The fitted text TextMetric. This is where the calculated best-fit information is stored.
    * @readOnly
    * @type {module:fontfill~TextMetric}
@@ -222,7 +285,12 @@ class AutoFittingText extends ReactiveClass {
       this.height,
       this.fontMetricsSize,
       this.lineHeight,
-      this.maxTokenSize
+      this.maxTokenSize,
+      this.maxLineHeight,
+      this.minLineHeight,
+      this.truncatedToken,
+      this.truncatedTokenSize,
+      this.context
     )
 
     const lines = bestFit.results.map(({line}) => line)
@@ -234,13 +302,20 @@ class AutoFittingText extends ReactiveClass {
       fillRatio = Math.min(widthRatio, heightRatio)
     }
 
+    let fontSize
+    fontSize = roundDown(fillRatio * this.height / (targetLines * this.lineHeight))
+
+    if (this.maxLineHeight > 0) {
+      fontSize = Math.min(fontSize, this.maxFontSize)
+    }
+
     return {
       lines,
       fillRatio,
       maxLineWidth: bestFit.maxLineWidth,
       largestLineSize: bestFit.largestLineSize,
       targetLines: targetLines,
-      fontSize: roundDown(fillRatio * this.height / (targetLines * this.lineHeight))
+      fontSize: fontSize
     }
   }
 
@@ -252,10 +327,12 @@ class AutoFittingText extends ReactiveClass {
    * @param  {Number} options.lineHeight=1.2  - Scalar value for text line height
    * @param  {String} options.family='Arial'  - Name of the font family to use
    * @param  {String} options.targetString='' - String to fit
-   * @param  {String} options.weight='normal' - weight of string
+   * @param  {String} options.weight='normal' - Weight of string
+   * @param  {String} options.maxFontSize=0   - Maximum font size to use when fitting text in px, (use 0 to disable).
+   * @param  {String} options.minFontSize=0   - Minimum font size to use when fitting text in px, (use 0 to disable).
    * @return {AutoFittingText}                - Instance of AutoFittingText
    */
-  constructor (width, height, {lineHeight, family, targetString, weight}) {
+  constructor (width, height, {lineHeight, family, targetString, weight, maxFontSize, minFontSize, truncatedToken}) {
     super()
     this.fontMetricsSize = this.defaultFontMetricSize
     this.width = width
@@ -265,6 +342,9 @@ class AutoFittingText extends ReactiveClass {
     this.family = family || 'Arial'
     this.targetString = targetString || ''
     this.weight = weight || 'normal'
+    this.maxFontSize = maxFontSize || 0
+    this.minFontSize = minFontSize || 0
+    this.truncatedToken = truncatedToken || '...'
     this.reactive()
   }
 

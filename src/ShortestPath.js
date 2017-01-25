@@ -13,15 +13,28 @@ let prevTime = Date.now()
  * @todo tidy code
  * @todo implement faster algorithm (SMAWK)
  */
-function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight, maxTokenSize) {
+function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHeight, maxTokenSize, maxLineHeight, minLineHeight, truncatedToken, truncatedTokenSize, context) {
     let currentTime = Date.now()
     prevTime = currentTime
     const count = tokens.length
+    let maxLines
 
+    // heightRatio is how many times the unscaled fontsize * desired line height fit into the height of the box.
     let heightRatio = height/(fontSize*lineHeight)
+    
+    // Use the maxTokenSize and maxLineHeight to caclulate the minimum lines
+    let lines
 
-    // Use the maxTokenSize to caclulate the minimum lines
-    let lines = Math.ceil(maxTokenSize * heightRatio / width)
+    lines = Math.ceil(maxTokenSize * heightRatio / width)
+
+    if (maxLineHeight > 0) {
+        const maxLineHeightLines = Math.ceil(height / maxLineHeight)
+        lines = Math.max(lines, maxLineHeightLines)
+    }
+
+    if (minLineHeight > 0) {
+        maxLines = Math.floor(height/ minLineHeight)
+    }
 
     // figure out minimum lines
     // should implement a binary search for this
@@ -59,6 +72,28 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
     }
     let minLines = i
     let largestLineSize
+
+    function truncateLine(line) {
+        let lineOffsets = new Array(line.length + 1)
+        lineOffsets[0] = 0
+
+        for (let i = 0; i < line.length; i++) {
+            lineOffsets[i + 1] = context.measureText(line.slice(0, i)).width
+        }
+
+        let j
+        for (j = lineOffsets.length; j > 0; j--) {
+            if ((lineOffsets[j] + truncatedTokenSize + spaceSize) < largestLineSize) {
+                let newLineSize = context.measureText(line.slice(0, j - 1) + truncatedToken).width;
+                if (newLineSize < largestLineSize) {
+                    break;
+                }
+            }
+        }
+
+        return line.slice(0, j - 1) + truncatedToken
+    }
+
     function findMinima(scaledWidth, targetLines) {
         let minima = [0].concat(fillArray(Array(count), Infinity))
         let breaks = fillArray(Array(count + 1), 0)
@@ -82,18 +117,46 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         }
 
         let lines = []
+        let lineIndexes = []
         let j = count
 
         while (j > 0) {
             let i = breaks[j]
-            let width = offsets[j] - offsets[i] + (j - i) *spaceSize
-            lines.push({line: tokens.slice(i, j).join(' ')})
+            if (lineIndexes.length + 1 > targetLines && (!maxLines || (maxLines > targetLines))) {
+                return false
+            } else {
+                lineIndexes.push({ start: i, end: j })
+            }
+            let width = offsets[j] - offsets[i] + (j - i) * spaceSize
             largestLineSize = Math.max(largestLineSize, width)
-            if (lines.length > targetLines) return false
             j = i
         }
+
+        const truncate = maxLines && (lineIndexes.length > maxLines) && (targetLines === maxLines)
+
+        if (truncate) {
+            lineIndexes = lineIndexes.slice(lineIndexes.length - maxLines, lineIndexes.length)
+        }
+
+        for (let l = lineIndexes.length - 1; l >= 0; l--) {
+            const lineIndex = lineIndexes[l]
+            let line = tokens.slice(lineIndex.start, lineIndex.end).join(' ')
+            if (l === 0 && truncate) {
+                line = truncateLine(line)
+            }
+            lines.push({ line: line })
+        }
+
         return lines
     }
+
+    // make sure min lines isn't greater than max lines
+    if (maxLines) {
+        if (minLines > maxLines) {
+            maxLines = minLines
+        }
+    }
+
     let currentLines = minLines
     let results
     let maxLineWidth
@@ -115,7 +178,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         }
     }
     return {
-        results: results.reverse(),
+        results: results,
         targetLines: currentLines,
         maxLineWidth: maxLineWidth,
         largestLineSize: largestLineSize

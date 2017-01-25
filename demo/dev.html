@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<img src="../images/big-wide-logo.svg"></img>
+<script src="http://cdn.jsdelivr.net/interact.js/1.2.6/interact.min.js"></script>
+<script src="http://localhost:8080/fontfill.global.js"></script>
+<script>
+  /* global fontfill, interact */
+  var AutoFittingText = fontfill.AutoFittingText
+  var ia = interact
+
+  var p = document.createElement('p')
+  var div = document.createElement('div')
+  var innerDiv = document.createElement('div')
+
+  div.appendChild(innerDiv)
+  innerDiv.appendChild(p)
+
+  var testString = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
+
+  div.className = 'textbox'
+  innerDiv.className = 'inner-textbox'
+
+  var family = 'Helvetica'
+  var lineHeight = 2
+
+  window.fittedText = new AutoFittingText(div.clientWidth || 100, div.clientWidth || 100, { targetString: testString, family, lineHeight, weight: 'normal', minFontSize: 15, maxFontSize: 70 })
+
+  document.body.appendChild(div)
+  ia('.textbox')
+    .draggable({
+      onmove: window.dragMoveListener
+    })
+    .resizable({
+      preserveAspectRatio: false,
+      edges: { left: true, right: true, bottom: true, top: true }
+    })
+    .gesturable({
+      max: 1,
+      maxPerElement: 1,
+      manualStart: Boolean
+    })
+    .on('resizemove', function (event) {
+      var target = event.target
+      var x = (parseFloat(target.getAttribute('data-x')) || 0)
+      var y = (parseFloat(target.getAttribute('data-y')) || 0)
+
+      // update the element's style
+      target.style.width = event.rect.width + 'px'
+      target.style.height = event.rect.height + 'px'
+
+      // translate when resizing from top or left edges
+      x += event.deltaRect.left
+      y += event.deltaRect.top
+
+      target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
+
+      target.setAttribute('data-x', x)
+      target.setAttribute('data-y', y)
+
+      window.fittedText.width = p.offsetWidth
+      window.fittedText.height = p.offsetHeight
+    })
+
+  function updatePara () {
+    p.style.fontSize = `${window.fittedText.metrics.fontSize}px`
+    p.style.fontFamily = window.fittedText.family
+    p.style.lineHeight = window.fittedText.lineHeight
+    p.style.fontWeight = window.fittedText.weight
+    p.style.letterSpacing = window.fittedText.metrics.letterSpacing + 'px'
+    p.innerHTML = '<div>' + window.fittedText.metrics.lines.join('</div><div>') + '</div>'
+    // p.style.left = (window.fittedText.metrics.letterSpacing / 2) + 'px'
+    console.log(window.fittedText.metrics)
+  }
+
+  window.fittedText.$watch('metrics', function (old, metrics) {
+    updatePara()
+  })
+
+  window.addEventListener('resize', function () {
+    window.fittedText.width = p.offsetWidth
+    window.fittedText.height = p.offsetHeight
+    updatePara()
+  })
+
+  window.fittedText.width = p.offsetWidth
+  window.fittedText.height = p.offsetHeight
+  updatePara()
+
+  window.updatePara = updatePara
+
+</script>
+</body>
+</html>

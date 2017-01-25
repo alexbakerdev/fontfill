@@ -1,0 +1,34 @@
+.textbox {
+  display: flex;
+  border: 1px dashed rgba(0,0,0,.3);
+  width: 95vw;
+  height: 75vh;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.inner-textbox {
+  font-variant-ligatures: none;
+  background-color: rgba(0,0,0,.02);
+  padding: 0;
+  font-family: 'Helvetica';
+  color: rgba(0,0,0,.7);
+  line-height: 2;
+  margin: 0;
+  display: block;
+  width: 90%;
+  height: 80%;
+  text-align: center;
+}
+
+.inner-textbox p {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+img {
+  height: 20vh;
+}

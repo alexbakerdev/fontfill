@@ -66,3 +66,26 @@ const bestFit = new AutoFittingText(targetDiv.width, targetDiv.height, {
 targetDiv.innerHTML = bestFit.metrics.lines.join('<br/>')
 targetDiv.style.fontSize = bestFit.metrics.fontSize
 ```
+
+### Demo
+
+There is a demo available at `demo/index.html` folder, that requires that the project be built.
+
+You can build the project by running:
+
+```
+npm install && npm run build
+```
+
+in the root of the project directory.
+
+### Development
+
+There are currently 0 unit tests, only an e2e test to check the project has built correctly.
+Currently I won't be accepting any PRs since the code is still in a prototypical state.
+
+
+```npm run dev```
+
+Will watch for changes and rebuild as neccessary, it will also host the `demo/dev.html` project at `localhost:8081/demo/dev.html`, which will auto reload on changes to the library.
+
