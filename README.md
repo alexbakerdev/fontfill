@@ -105,18 +105,9 @@ Will watch for changes and rebuild as neccessary, it will also host the `demo/de
         * [.maxFontSize](#module_fontfill..AutoFittingText+maxFontSize) : <code>Number</code>
         * [.minFontSize](#module_fontfill..AutoFittingText+minFontSize) : <code>Number</code>
         * [.truncatedToken](#module_fontfill..AutoFittingText+truncatedToken) : <code>String</code>
-        * [.contextFontString](#module_fontfill..AutoFittingText+contextFontString) ⇒ <code>String</code>
-        * [.tokens](#module_fontfill..AutoFittingText+tokens) ⇒ <code>Array.&lt;String&gt;</code>
-        * [.spaceSize](#module_fontfill..AutoFittingText+spaceSize) ⇒ <code>Number</code>
-        * [.truncatedTokenSize](#module_fontfill..AutoFittingText+truncatedTokenSize) ⇒ <code>Number</code>
-        * [.offsets](#module_fontfill..AutoFittingText+offsets) ⇒ <code>Array.&lt;Number&gt;</code>
-        * [.maxTokenSize](#module_fontfill..AutoFittingText+maxTokenSize) ⇒ <code>Number</code>
-        * [.maxLineHeight](#module_fontfill..AutoFittingText+maxLineHeight) ⇒ <code>Number</code>
-        * [.minLineHeight](#module_fontfill..AutoFittingText+minLineHeight) ⇒ <code>Number</code>
+        * [.contextFontString](#module_fontfill..AutoFittingText+contextFontString) : <code>String</code>
+        * [.tokens](#module_fontfill..AutoFittingText+tokens) : <code>Array.&lt;String&gt;</code>
         * [.metrics](#module_fontfill..AutoFittingText+metrics) : <code>[TextMetric](#module_fontfill..TextMetric)</code>
-        * [.context](#module_fontfill..AutoFittingText+context) : <code>[CanvasRenderingContext2D](#external_CanvasRenderingContext2D)</code>
-        * [.defaultFontMetricSize](#module_fontfill..AutoFittingText+defaultFontMetricSize) : <code>Number</code>
-        * [.wordDeleminatorRegex](#module_fontfill..AutoFittingText+wordDeleminatorRegex) : <code>RegExp</code>
         * [.$watch(key, callback)](#module_ReactiveClass..ReactiveClass+$watch)
         * [.$set(key, descriptor)](#module_ReactiveClass..ReactiveClass+$set)
     * [~TextMetric](#module_fontfill..TextMetric) ⇒ <code>TextMetric</code>
@@ -141,8 +132,9 @@ AutoFittingText Constructor
 | options.family | <code>String</code> | <code>&#x27;Arial&#x27;</code> | Name of the font family to use |
 | options.targetString | <code>String</code> | <code>&#x27;&#x27;</code> | String to fit |
 | options.weight | <code>String</code> | <code>&#x27;normal&#x27;</code> | Weight of string |
-| options.maxFontSize | <code>String</code> | <code>0</code> | Maximum font size to use when fitting text in px, (use 0 to disable). |
-| options.minFontSize | <code>String</code> | <code>0</code> | Minimum font size to use when fitting text in px, (use 0 to disable). |
+| options.maxFontSize | <code>Number</code> | <code>0</code> | Maximum font size to use when fitting text in px, (use 0 to disable). |
+| options.minFontSize | <code>Number</code> | <code>0</code> | Minimum font size to use when fitting text in px, (use 0 to disable). |
+| options.truncatedToken | <code>String</code> | <code>&#x27;...&#x27;</code> | String inserted to end of visible text to indicate truncation. |
 
 <a name="module_fontfill..AutoFittingText+targetString"></a>
 #### .targetString : <code>String</code>
@@ -206,82 +198,23 @@ The minimum font size to use when best fitting text as a px value.
 Token to use when text has to be truncated to fit minimum font size
 
 <a name="module_fontfill..AutoFittingText+contextFontString"></a>
-#### .contextFontString ⇒ <code>String</code>
+#### .contextFontString : <code>String</code>
 
 
-**Returns**: <code>String</code> - - A string that describes the CanvasRenderingContext2D font style  
 The string to use when setting context font weight
 
 <a name="module_fontfill..AutoFittingText+tokens"></a>
-#### .tokens: `(readonly)` ⇒ <code>Array.&lt;String&gt;</code>
+#### .tokens: `(readonly)` : <code>Array.&lt;String&gt;</code>
 
 
 The target string broken into an array of words split
 by wordDeleminatorRegex
-
-<a name="module_fontfill..AutoFittingText+spaceSize"></a>
-#### .spaceSize: `(readonly)` ⇒ <code>Number</code>
-
-
-The size of a rendered space with current
-fontMetricSize and family
-
-<a name="module_fontfill..AutoFittingText+truncatedTokenSize"></a>
-#### .truncatedTokenSize: `(readonly)` ⇒ <code>Number</code>
-
-
-The size of a rendered space with current
-fontMetricSize and family
-
-<a name="module_fontfill..AutoFittingText+offsets"></a>
-#### .offsets: `(readonly)` ⇒ <code>Array.&lt;Number&gt;</code>
-
-
-A cumulative list of target string length, by word
-when rendered with current fontMetricSize and family
-
-<a name="module_fontfill..AutoFittingText+maxTokenSize"></a>
-#### .maxTokenSize ⇒ <code>Number</code>
-
-
-**Returns**: <code>Number</code> - - the largest token size using current fontFamily  
-The biggest token size of current targetString
-
-<a name="module_fontfill..AutoFittingText+maxLineHeight"></a>
-#### .maxLineHeight ⇒ <code>Number</code>
-
-
-The maximum line height is calculatied using line height ratio and maxFontSize
-
-<a name="module_fontfill..AutoFittingText+minLineHeight"></a>
-#### .minLineHeight ⇒ <code>Number</code>
-
-
-The minimum line height is calculatied using line height ratio and minFontSize
 
 <a name="module_fontfill..AutoFittingText+metrics"></a>
 #### .metrics: `(readonly)` : <code>[TextMetric](#module_fontfill..TextMetric)</code>
 
 
 The fitted text TextMetric. This is where the calculated best-fit information is stored.
-
-<a name="module_fontfill..AutoFittingText+context"></a>
-#### .context: `(constant)` : <code>[CanvasRenderingContext2D](#external_CanvasRenderingContext2D)</code>
-
-
-Static property that stores a shared shadow Canvas 2D Rendering Context element.
-
-<a name="module_fontfill..AutoFittingText+defaultFontMetricSize"></a>
-#### .defaultFontMetricSize: `(constant)` : <code>Number</code> : _(default = _<code>100</code>_)_
-
-
-default fontMetricSize
-
-<a name="module_fontfill..AutoFittingText+wordDeleminatorRegex"></a>
-#### .wordDeleminatorRegex: `(constant)` : <code>RegExp</code>
-
-
-Regular Expression for splitting string into words
 
 <a name="module_ReactiveClass..ReactiveClass+$watch"></a>
 #### .$watch(key, callback)
