@@ -67,6 +67,29 @@ targetDiv.innerHTML = bestFit.metrics.lines.join('<br/>')
 targetDiv.style.fontSize = bestFit.metrics.fontSize
 ```
 
+### Demo
+
+There is a demo available at `demo/index.html` folder, that requires that the project be built.
+
+You can build the project by running:
+
+```
+npm install && npm run build
+```
+
+in the root of the project directory.
+
+### Development
+
+There are currently 0 unit tests, only an e2e test to check the project has built correctly.
+Currently I won't be accepting any PRs since the code is still in a prototypical state.
+
+
+```npm run dev```
+
+Will watch for changes and rebuild as neccessary, it will also host the `demo/dev.html` project at `localhost:8081/demo/dev.html`, which will auto reload on changes to the library.
+
+
 # API Reference
 
 * [fontfill](#module_fontfill)
@@ -79,11 +102,17 @@ targetDiv.style.fontSize = bestFit.metrics.fontSize
         * [.lineHeight](#module_fontfill..AutoFittingText+lineHeight) : <code>Number</code>
         * [.height](#module_fontfill..AutoFittingText+height) : <code>Number</code>
         * [.width](#module_fontfill..AutoFittingText+width) : <code>Number</code>
+        * [.maxFontSize](#module_fontfill..AutoFittingText+maxFontSize) : <code>Number</code>
+        * [.minFontSize](#module_fontfill..AutoFittingText+minFontSize) : <code>Number</code>
+        * [.truncatedToken](#module_fontfill..AutoFittingText+truncatedToken) : <code>String</code>
         * [.contextFontString](#module_fontfill..AutoFittingText+contextFontString) ⇒ <code>String</code>
         * [.tokens](#module_fontfill..AutoFittingText+tokens) ⇒ <code>Array.&lt;String&gt;</code>
         * [.spaceSize](#module_fontfill..AutoFittingText+spaceSize) ⇒ <code>Number</code>
+        * [.truncatedTokenSize](#module_fontfill..AutoFittingText+truncatedTokenSize) ⇒ <code>Number</code>
         * [.offsets](#module_fontfill..AutoFittingText+offsets) ⇒ <code>Array.&lt;Number&gt;</code>
         * [.maxTokenSize](#module_fontfill..AutoFittingText+maxTokenSize) ⇒ <code>Number</code>
+        * [.maxLineHeight](#module_fontfill..AutoFittingText+maxLineHeight) ⇒ <code>Number</code>
+        * [.minLineHeight](#module_fontfill..AutoFittingText+minLineHeight) ⇒ <code>Number</code>
         * [.metrics](#module_fontfill..AutoFittingText+metrics) : <code>[TextMetric](#module_fontfill..TextMetric)</code>
         * [.context](#module_fontfill..AutoFittingText+context) : <code>[CanvasRenderingContext2D](#external_CanvasRenderingContext2D)</code>
         * [.defaultFontMetricSize](#module_fontfill..AutoFittingText+defaultFontMetricSize) : <code>Number</code>
@@ -111,7 +140,9 @@ AutoFittingText Constructor
 | options.lineHeight | <code>Number</code> | <code>1.2</code> | Scalar value for text line height |
 | options.family | <code>String</code> | <code>&#x27;Arial&#x27;</code> | Name of the font family to use |
 | options.targetString | <code>String</code> | <code>&#x27;&#x27;</code> | String to fit |
-| options.weight | <code>String</code> | <code>&#x27;normal&#x27;</code> | weight of string |
+| options.weight | <code>String</code> | <code>&#x27;normal&#x27;</code> | Weight of string |
+| options.maxFontSize | <code>String</code> | <code>0</code> | Maximum font size to use when fitting text in px, (use 0 to disable). |
+| options.minFontSize | <code>String</code> | <code>0</code> | Minimum font size to use when fitting text in px, (use 0 to disable). |
 
 <a name="module_fontfill..AutoFittingText+targetString"></a>
 #### .targetString : <code>String</code>
@@ -156,6 +187,24 @@ Height to constrain text fit to, as a `px` value.
 
 Width to constrain text fit to, as a `px` value.
 
+<a name="module_fontfill..AutoFittingText+maxFontSize"></a>
+#### .maxFontSize : <code>Number</code>
+
+
+The maximum font size to use when best fitting text as a px value.
+
+<a name="module_fontfill..AutoFittingText+minFontSize"></a>
+#### .minFontSize : <code>Number</code>
+
+
+The minimum font size to use when best fitting text as a px value.
+
+<a name="module_fontfill..AutoFittingText+truncatedToken"></a>
+#### .truncatedToken : <code>String</code>
+
+
+Token to use when text has to be truncated to fit minimum font size
+
 <a name="module_fontfill..AutoFittingText+contextFontString"></a>
 #### .contextFontString ⇒ <code>String</code>
 
@@ -177,6 +226,13 @@ by wordDeleminatorRegex
 The size of a rendered space with current
 fontMetricSize and family
 
+<a name="module_fontfill..AutoFittingText+truncatedTokenSize"></a>
+#### .truncatedTokenSize: `(readonly)` ⇒ <code>Number</code>
+
+
+The size of a rendered space with current
+fontMetricSize and family
+
 <a name="module_fontfill..AutoFittingText+offsets"></a>
 #### .offsets: `(readonly)` ⇒ <code>Array.&lt;Number&gt;</code>
 
@@ -190,6 +246,18 @@ when rendered with current fontMetricSize and family
 
 **Returns**: <code>Number</code> - - the largest token size using current fontFamily  
 The biggest token size of current targetString
+
+<a name="module_fontfill..AutoFittingText+maxLineHeight"></a>
+#### .maxLineHeight ⇒ <code>Number</code>
+
+
+The maximum line height is calculatied using line height ratio and maxFontSize
+
+<a name="module_fontfill..AutoFittingText+minLineHeight"></a>
+#### .minLineHeight ⇒ <code>Number</code>
+
+
+The minimum line height is calculatied using line height ratio and minFontSize
 
 <a name="module_fontfill..AutoFittingText+metrics"></a>
 #### .metrics: `(readonly)` : <code>[TextMetric](#module_fontfill..TextMetric)</code>

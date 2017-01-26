@@ -1,3 +1,6 @@
 doc-build/
 images/
 test/
+webpack.config.js
+.babelrc
+demo/

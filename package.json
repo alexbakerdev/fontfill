@@ -1,6 +1,6 @@
 {
   "name": "fontfill",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Auto fill a box with arbitary text",
   "main": "dist/index.js",
   "repository": {
@@ -9,8 +9,9 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js --single-run",
-    "dev": "BUILD_ENV=dev webpack-dev-server --content-base dist/",
+    "dev": "npm run demo & BUILD_ENV=dev webpack-dev-server --content-base dist/",
     "build": "rm -rf ./dist && BUILD_ENV=prod node_modules/.bin/webpack && npm run babel && npm run docs",
+    "demo": "serve -p 8081 .",
     "docs": "jsdoc2md -t doc-build/jsdoc2md.hbs --files ./src/*.js --helper doc-build/helpers/*.js --partial doc-build/partials/*.hbs > README.md",
     "babel": "babel ./src -d ./dist",
     "preversion": "npm install . -g && npm run build && npm test",
@@ -43,6 +44,7 @@
     "mocha": "^3.1.2",
     "phantomjs": "^2.1.7",
     "script-loader": "^0.7.0",
+    "serve": "^2.4.1",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.1",
