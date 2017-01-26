@@ -35,6 +35,7 @@ class AutoFittingText extends ReactiveClass {
   /**
    * Static property that stores a shared shadow Canvas 2D Rendering Context element.
    * @readOnly
+   * @private
    * @const {external:CanvasRenderingContext2D}
    */
   get context () {
@@ -44,6 +45,7 @@ class AutoFittingText extends ReactiveClass {
   /**
    * default fontMetricSize
    * @readOnly
+   * @private
    * @const {Number}
    * @default 100
    */
@@ -54,6 +56,7 @@ class AutoFittingText extends ReactiveClass {
   /**
    * Regular Expression for splitting string into words
    * @readOnly
+   * @private
    * @const {RegExp}
    */
   get wordDeleminatorRegex () {
@@ -186,7 +189,7 @@ class AutoFittingText extends ReactiveClass {
 
   /**
    * The string to use when setting context font weight
-   * @return {String} - A string that describes the CanvasRenderingContext2D font style
+   * @type {String} - A string that describes the CanvasRenderingContext2D font style
    */
   get contextFontString () {
     return `${this.weight} ${this.fontMetricsSize}px ${this.family}`
@@ -196,7 +199,7 @@ class AutoFittingText extends ReactiveClass {
    * The target string broken into an array of words split
    * by wordDeleminatorRegex
    * @readOnly
-   * @return {String[]}
+   * @type {String[]}
    */
   get tokens () {
     return this.targetString.split(this.wordDeleminatorRegex)
@@ -206,7 +209,8 @@ class AutoFittingText extends ReactiveClass {
    * The size of a rendered space with current
    * fontMetricSize and family
    * @readOnly
-   * @return {Number}
+   * @private
+   * @type {Number}
    */
   get spaceSize () {
     this.context.font = this.contextFontString
@@ -217,7 +221,8 @@ class AutoFittingText extends ReactiveClass {
    * The size of a rendered space with current
    * fontMetricSize and family
    * @readOnly
-   * @return {Number}
+   * @private
+   * @type {Number}
    */
   get truncatedTokenSize () {
     this.context.font = this.contextFontString
@@ -228,7 +233,8 @@ class AutoFittingText extends ReactiveClass {
    * A cumulative list of target string length, by word
    * when rendered with current fontMetricSize and family
    * @readOnly
-   * @return {Number[]}
+   * @private
+   * @type {Number[]}
    */
   get offsets () {
     let offsets = new Array(this.tokens.length + 1)
@@ -246,7 +252,9 @@ class AutoFittingText extends ReactiveClass {
 
   /**
    * The biggest token size of current targetString
-   * @return {Number} - the largest token size using current fontFamily
+   * @readOnly
+   * @private
+   * @type {Number}
    */
   get maxTokenSize () {
     if (this.offsets) {
@@ -257,7 +265,9 @@ class AutoFittingText extends ReactiveClass {
 
   /**
    * The maximum line height is calculatied using line height ratio and maxFontSize
-   * @return {Number}
+   * @readOnly
+   * @private
+   * @type {Number}
    */
   get maxLineHeight () {
     return this.maxFontSize * this.lineHeight
@@ -265,7 +275,9 @@ class AutoFittingText extends ReactiveClass {
 
   /**
    * The minimum line height is calculatied using line height ratio and minFontSize
-   * @return {Number}
+   * @readOnly
+   * @private
+   * @type {Number}
    */
   get minLineHeight () {
     return this.minFontSize * this.lineHeight
@@ -321,16 +333,17 @@ class AutoFittingText extends ReactiveClass {
 
   /**
    * AutoFittingText Constructor
-   * @param  {Number} width                   - Width to fit in px
-   * @param  {Number} height                  - Height to fit in px
-   * @param  {Object} options                 - Options:
-   * @param  {Number} options.lineHeight=1.2  - Scalar value for text line height
-   * @param  {String} options.family='Arial'  - Name of the font family to use
-   * @param  {String} options.targetString='' - String to fit
-   * @param  {String} options.weight='normal' - Weight of string
-   * @param  {String} options.maxFontSize=0   - Maximum font size to use when fitting text in px, (use 0 to disable).
-   * @param  {String} options.minFontSize=0   - Minimum font size to use when fitting text in px, (use 0 to disable).
-   * @return {AutoFittingText}                - Instance of AutoFittingText
+   * @param  {Number} width                        - Width to fit in px
+   * @param  {Number} height                       - Height to fit in px
+   * @param  {Object} options                      - Options:
+   * @param  {Number} options.lineHeight=1.2       - Scalar value for text line height
+   * @param  {String} options.family='Arial'       - Name of the font family to use
+   * @param  {String} options.targetString=''      - String to fit
+   * @param  {String} options.weight='normal'      - Weight of string
+   * @param  {Number} options.maxFontSize=0        - Maximum font size to use when fitting text in px, (use 0 to disable).
+   * @param  {Number} options.minFontSize=0        - Minimum font size to use when fitting text in px, (use 0 to disable).
+   * @param  {String} options.truncatedToken='...' - String inserted to end of visible text to indicate truncation.
+   * @return {AutoFittingText}                     - Instance of AutoFittingText
    */
   constructor (width, height, {lineHeight, family, targetString, weight, maxFontSize, minFontSize, truncatedToken}) {
     super()
