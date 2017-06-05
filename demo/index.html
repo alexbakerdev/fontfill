@@ -28,7 +28,7 @@
   var family = 'Helvetica'
   var lineHeight = 1.2
 
-  window.fittedText = new AutoFittingText(div.clientWidth || 100, div.clientWidth || 100, { targetString: testString, family, lineHeight, weight: 'normal' })
+  window.fittedText = new AutoFittingText(div.clientWidth || 100, div.clientWidth || 100, { targetString: testString, family, lineHeight, weight: 'normal', minFontSize: 15, maxFontSize: 70 })
 
   document.body.appendChild(div)
   ia('.textbox')
