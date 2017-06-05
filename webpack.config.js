@@ -59,7 +59,7 @@ function baseConfig () {
       path: outputPath,
       library: "fontfill",
     },
-    devtool: process.env.BUILD_ENV.toLowerCase() === 'dev' ? '#eval-source-map' : 'source-map',
+    devtool: process.env.BUILD_ENV.toLowerCase() === 'dev' ? 'eval' : 'source-map',
     plugins: [ ],
     module: {
       preLoaders: [ { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ } ],
