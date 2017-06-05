@@ -105,9 +105,6 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
     function findMinima(scaledWidth, targetLines) {
         let minima = [0].concat(fillArray(Array(count), Infinity))
         let breaks = fillArray(Array(count + 1), 0)
-        let fillMinima = [0].concat(fillArray(Array(count), Infinity))
-        let fillBreaks = fillArray(Array(count + 1), 0)
-        let l = 0
         largestLineSize = 0
         for (let i = 0; i < count; i++) {
             let j = i + 1
