@@ -71,6 +71,14 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         }
     }
     let minLines = i
+
+    // make sure min lines isn't greater than max lines
+    if (maxLines) {
+        if (minLines > maxLines) {
+            minLines = maxLines
+        }
+    }
+
     let largestLineSize
 
     function truncateLine(line) {
@@ -85,7 +93,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         for (j = lineOffsets.length; j > 0; j--) {
             if ((lineOffsets[j] + truncatedTokenSize + spaceSize) < largestLineSize) {
                 let newLineSize = context.measureText(line.slice(0, j - 1) + truncatedToken).width;
-                if (newLineSize < largestLineSize) {
+                if (newLineSize + 1 < largestLineSize) { // + 1 to avoid rounding errors
                     break;
                 }
             }
@@ -102,12 +110,12 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             let j = i + 1
             while (j <= count) {
                 let w = offsets[j] - offsets[i] + (j - i - 1) *spaceSize
-                let cost
                 if (w > scaledWidth) {
                     break
-                } else {
-                    cost = minima[i] + Math.pow((scaledWidth - w), 2)
                 }
+
+                let cost = minima[i] + Math.pow((scaledWidth - w), 2)
+
                 if (cost < minima[j]) {
                     minima[j] = cost
                     breaks[j] = i
@@ -138,6 +146,54 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             lineIndexes = lineIndexes.slice(lineIndexes.length - maxLines, lineIndexes.length)
         }
 
+        function countLinesFromBreaks (nextBreak) {
+            let lineCount = 0
+
+            while (nextBreak !== 0) {
+                nextBreak = breaks[nextBreak]
+                lineCount++
+            }
+
+            return lineCount
+        }
+
+        let currentStartingBreak = 0
+        if (truncate) {
+            // Need to find the break that fits the most words into the maxLines
+            j = 0            
+            for (let i = 0; i < breaks.length; i++) {
+                if (i !== 0) {
+                    let lineCount = countLinesFromBreaks(i)
+
+                    if (lineCount === maxLines) {
+                        currentStartingBreak = i
+                    }
+
+                    if (lineCount > maxLines) {
+                        break
+                    }
+                }
+            }
+            
+            lineIndexes = []
+            j = currentStartingBreak
+            let i = breaks[j]
+            lineIndexes.push({ start: i, end: j + 1 })
+
+            let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+            largestLineSize = Math.max(largestLineSize, width)
+
+            j = i
+            // recalculate line indexes with truncated text
+            while (j > 0) {
+                let i = breaks[j]
+                lineIndexes.push({ start: i, end: j })
+                let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+                largestLineSize = Math.max(largestLineSize, width)
+                j = i
+            }
+        }
+
         for (let l = lineIndexes.length - 1; l >= 0; l--) {
             const lineIndex = lineIndexes[l]
             let line = tokens.slice(lineIndex.start, lineIndex.end).join(' ')
@@ -148,13 +204,6 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         }
 
         return lines
-    }
-
-    // make sure min lines isn't greater than max lines
-    if (maxLines) {
-        if (minLines > maxLines) {
-            maxLines = minLines
-        }
     }
 
     let currentLines = minLines
