@@ -161,10 +161,6 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
 
         const truncate = maxLines && (lineIndexes.length > maxLines) && (targetLines === maxLines)
 
-        if (truncate) {
-            lineIndexes = lineIndexes.slice(lineIndexes.length - maxLines, lineIndexes.length)
-        }
-
         function countLinesFromBreaks (nextBreak) {
             let lineCount = 0
 
