@@ -311,7 +311,7 @@ class AutoFittingText extends ReactiveClass {
     if (targetLines > lines.length) {
       let widthRatio = bestFit.maxLineWidth / bestFit.largestLineSize
       let heightRatio = targetLines / lines.length
-      fillRatio = Math.min(widthRatio, heightRatio)
+      fillRatio = roundDown(Math.min(widthRatio, heightRatio))
     }
 
     let fontSize

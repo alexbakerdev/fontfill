@@ -25,10 +25,25 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
     // Use the maxTokenSize and maxLineHeight to caclulate the minimum lines
     let lines
 
+    /**
+     * If a max font size is set, then we must have a minimum number of lines,
+     * any less than this minimum will result in text being too large.
+     * Sometimes these minimum lines will not fit into available height evenly,
+     * most of the algorithm work on the bases of available height divided evenly 
+     * between the target lines.
+     * The maxLineHeightQuotient is used later to calculate the scaledwidth using
+     * a remainder of the minLines calculation diretly below, while the rest of the algorithm
+     * uses the floored value of this.
+     * This is only used at the first pass of findMinima, after that it continues as normal
+     * with even line division.
+     */
+    let maxLineHeightQuotient
+
     lines = Math.ceil(maxTokenSize * heightRatio / width)
 
     if (maxLineHeight > 0) {
-        const maxLineHeightLines = Math.ceil(height / maxLineHeight)
+        maxLineHeightQuotient = height / maxLineHeight
+        const maxLineHeightLines = Math.floor(maxLineHeightQuotient)
         lines = Math.max(lines, maxLineHeightLines)
     }
 
@@ -70,6 +85,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             }
         }
     }
+
     let minLines = i
 
     // make sure min lines isn't greater than max lines
@@ -102,14 +118,19 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         return line.slice(0, j - 1) + truncatedToken
     }
 
+    function calcWidth(i, j) {
+        return offsets[j] - offsets[i] + 1 + (j - i - 1) * spaceSize // there is a plus one to avoid rounding errors
+    }
+
     function findMinima(scaledWidth, targetLines) {
         let minima = [0].concat(fillArray(Array(count), Infinity))
         let breaks = fillArray(Array(count + 1), 0)
+
         largestLineSize = 0
         for (let i = 0; i < count; i++) {
             let j = i + 1
             while (j <= count) {
-                let w = offsets[j] - offsets[i] + (j - i - 1) *spaceSize
+                let w = calcWidth(i, j)
                 if (w > scaledWidth) {
                     break
                 }
@@ -135,16 +156,12 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             } else {
                 lineIndexes.push({ start: i, end: j })
             }
-            let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+            let width = calcWidth(i, j)
             largestLineSize = Math.max(largestLineSize, width)
             j = i
         }
 
         const truncate = maxLines && (lineIndexes.length > maxLines) && (targetLines === maxLines)
-
-        if (truncate) {
-            lineIndexes = lineIndexes.slice(lineIndexes.length - maxLines, lineIndexes.length)
-        }
 
         function countLinesFromBreaks (nextBreak) {
             let lineCount = 0
@@ -180,7 +197,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             let i = breaks[j]
             lineIndexes.push({ start: i, end: j + 1 })
 
-            let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+            let width = calcWidth(i, j)
             largestLineSize = Math.max(largestLineSize, width)
 
             j = i
@@ -188,7 +205,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             while (j > 0) {
                 let i = breaks[j]
                 lineIndexes.push({ start: i, end: j })
-                let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+                let width = calcWidth(i, j)
                 largestLineSize = Math.max(largestLineSize, width)
                 j = i
             }
@@ -211,8 +228,17 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
     let maxLineWidth
     let attempts = 0
     let trying = true
+
+    const maxLineHeightQuotientFloor = Math.floor(maxLineHeightQuotient)
+    let usedMaxLineHeight = false 
     while (trying) {
-        maxLineWidth = currentLines * width/heightRatio
+        maxLineWidth = currentLines * width/heightRatio            
+        if (!usedMaxLineHeight) {
+            if (Math.floor(maxLineHeightQuotient) === currentLines) {
+                maxLineWidth = maxLineHeightQuotient * width/heightRatio
+            }
+        }
+
         results = findMinima(maxLineWidth, currentLines)
 
         if (attempts > 100) {
@@ -221,7 +247,11 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         attempts++
 
         if (!results) {
-            currentLines++
+            if (!usedMaxLineHeight) {
+                usedMaxLineHeight = true
+            } else {
+                currentLines++            
+            }
         } else {
             trying = false
         }
