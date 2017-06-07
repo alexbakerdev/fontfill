@@ -102,6 +102,10 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         return line.slice(0, j - 1) + truncatedToken
     }
 
+    function calcWidth(i, j) {
+        return offsets[j] - offsets[i] + 1 + (j - i - 1) * spaceSize // there is a plus one to avoid rounding errors
+    }
+
     function findMinima(scaledWidth, targetLines) {
         let minima = [0].concat(fillArray(Array(count), Infinity))
         let breaks = fillArray(Array(count + 1), 0)
@@ -109,7 +113,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         for (let i = 0; i < count; i++) {
             let j = i + 1
             while (j <= count) {
-                let w = offsets[j] - offsets[i] + (j - i - 1) *spaceSize
+                let w = calcWidth(i, j)
                 if (w > scaledWidth) {
                     break
                 }
@@ -135,7 +139,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             } else {
                 lineIndexes.push({ start: i, end: j })
             }
-            let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+            let width = calcWidth(i, j)
             largestLineSize = Math.max(largestLineSize, width)
             j = i
         }
@@ -180,7 +184,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             let i = breaks[j]
             lineIndexes.push({ start: i, end: j + 1 })
 
-            let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+            let width = calcWidth(i, j)
             largestLineSize = Math.max(largestLineSize, width)
 
             j = i
@@ -188,7 +192,7 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
             while (j > 0) {
                 let i = breaks[j]
                 lineIndexes.push({ start: i, end: j })
-                let width = offsets[j] - offsets[i] + (j - i) * spaceSize
+                let width = calcWidth(i, j)
                 largestLineSize = Math.max(largestLineSize, width)
                 j = i
             }
