@@ -25,10 +25,25 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
     // Use the maxTokenSize and maxLineHeight to caclulate the minimum lines
     let lines
 
+    /**
+     * If a max font size is set, then we must have a minimum number of lines,
+     * any less than this minimum will result in text being too large.
+     * Sometimes these minimum lines will not fit into available height evenly,
+     * most of the algorithm work on the bases of available height divided evenly 
+     * between the target lines.
+     * The maxLineHeightQuotient is used later to calculate the scaledwidth using
+     * a remainder of the minLines calculation diretly below, while the rest of the algorithm
+     * uses the floored value of this.
+     * This is only used at the first pass of findMinima, after that it continues as normal
+     * with even line division.
+     */
+    let maxLineHeightQuotient
+
     lines = Math.ceil(maxTokenSize * heightRatio / width)
 
     if (maxLineHeight > 0) {
-        const maxLineHeightLines = Math.ceil(height / maxLineHeight)
+        maxLineHeightQuotient = height / maxLineHeight
+        const maxLineHeightLines = Math.floor(maxLineHeightQuotient)
         lines = Math.max(lines, maxLineHeightLines)
     }
 
@@ -215,8 +230,17 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
     let maxLineWidth
     let attempts = 0
     let trying = true
+
+    const maxLineHeightQuotientFloor = Math.floor(maxLineHeightQuotient)
+    let usedMaxLineHeight = false 
     while (trying) {
-        maxLineWidth = currentLines * width/heightRatio
+        maxLineWidth = currentLines * width/heightRatio            
+        if (!usedMaxLineHeight) {
+            if (Math.floor(maxLineHeightQuotient) === currentLines) {
+                maxLineWidth = maxLineHeightQuotient * width/heightRatio
+            }
+        }
+
         results = findMinima(maxLineWidth, currentLines)
 
         if (attempts > 100) {
@@ -225,7 +249,11 @@ function getBestFit(tokens, spaceSize, offsets, width, height, fontSize, lineHei
         attempts++
 
         if (!results) {
-            currentLines++
+            if (!usedMaxLineHeight) {
+                usedMaxLineHeight = true
+            } else {
+                currentLines++            
+            }
         } else {
             trying = false
         }
