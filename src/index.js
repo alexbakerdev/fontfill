@@ -33,13 +33,28 @@ const wordDeleminatorRegex = /[ ]/
  */
 class AutoFittingText extends ReactiveClass {
   /**
+   * The window to use for measuring text.
+   * @const {Window}
+   */
+  set window (window) {
+    this._setProperty('_window', window, 'object')
+
+    // update the context that is used for this instance
+    this._setProperty('_context', window.document.createElement('canvas').getContext('2d'), 'object')
+  }
+
+  get window () {
+    return this._window
+  }
+
+  /**
    * Static property that stores a shared shadow Canvas 2D Rendering Context element.
    * @readOnly
    * @private
    * @const {external:CanvasRenderingContext2D}
    */
   get context () {
-    return ctx
+    return this._context || ctx
   }
 
   /**
@@ -342,14 +357,19 @@ class AutoFittingText extends ReactiveClass {
    * @param  {String} options.weight='normal'      - Weight of string
    * @param  {Number} options.maxFontSize=0        - Maximum font size to use when fitting text in px, (use 0 to disable).
    * @param  {Number} options.minFontSize=0        - Minimum font size to use when fitting text in px, (use 0 to disable).
+   * @param  {Number} options.window               - The window that should be used to measure the text.
    * @param  {String} options.truncatedToken='...' - String inserted to end of visible text to indicate truncation.
    * @return {AutoFittingText}                     - Instance of AutoFittingText
    */
-  constructor (width, height, {lineHeight, family, targetString, weight, maxFontSize, minFontSize, truncatedToken}) {
+  constructor (width, height, {lineHeight, family, targetString, weight, maxFontSize, minFontSize, truncatedToken, window}) {
     super()
     this.fontMetricsSize = this.defaultFontMetricSize
     this.width = width
     this.height = height
+
+    if (window) {
+      this.window = window      
+    }
 
     this.lineHeight = lineHeight || 1.2
     this.family = family || 'Arial'
