@@ -368,7 +368,7 @@ class AutoFittingText extends ReactiveClass {
     this.height = height
 
     if (window) {
-      this.window = window      
+      this.window = window
     }
 
     this.lineHeight = lineHeight || 1.2
