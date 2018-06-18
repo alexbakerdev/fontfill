@@ -108,6 +108,7 @@ Will watch for changes and rebuild as neccessary, it will also host the `demo/de
         * [.contextFontString](#module_fontfill..AutoFittingText+contextFontString) : <code>String</code>
         * [.tokens](#module_fontfill..AutoFittingText+tokens) : <code>Array.&lt;String&gt;</code>
         * [.metrics](#module_fontfill..AutoFittingText+metrics) : <code>[TextMetric](#module_fontfill..TextMetric)</code>
+        * [.window](#module_fontfill..AutoFittingText+window) : <code>Window</code>
         * [.$watch(key, callback)](#module_ReactiveClass..ReactiveClass+$watch)
         * [.$set(key, descriptor)](#module_ReactiveClass..ReactiveClass+$set)
     * [~TextMetric](#module_fontfill..TextMetric) ⇒ <code>TextMetric</code>
@@ -134,6 +135,7 @@ AutoFittingText Constructor
 | options.weight | <code>String</code> | <code>&#x27;normal&#x27;</code> | Weight of string |
 | options.maxFontSize | <code>Number</code> | <code>0</code> | Maximum font size to use when fitting text in px, (use 0 to disable). |
 | options.minFontSize | <code>Number</code> | <code>0</code> | Minimum font size to use when fitting text in px, (use 0 to disable). |
+| options.window | <code>Number</code> |  | The window that should be used to measure the text. |
 | options.truncatedToken | <code>String</code> | <code>&#x27;...&#x27;</code> | String inserted to end of visible text to indicate truncation. |
 
 <a name="module_fontfill..AutoFittingText+targetString"></a>
@@ -215,6 +217,12 @@ by wordDeleminatorRegex
 
 
 The fitted text TextMetric. This is where the calculated best-fit information is stored.
+
+<a name="module_fontfill..AutoFittingText+window"></a>
+#### .window: `(constant)` : <code>Window</code>
+
+
+The window to use for measuring text.
 
 <a name="module_ReactiveClass..ReactiveClass+$watch"></a>
 #### .$watch(key, callback)
